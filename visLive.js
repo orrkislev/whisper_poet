@@ -14,6 +14,7 @@ function startRecordData() {
 }
 
 function visRecording() {
+    return
     background(255)
     const recordingTime = (Date.now() - recordStart) / 1000
 
@@ -44,7 +45,7 @@ function visRecording() {
 function visLive() {
     fill(200)
     noStroke()
-    rect(0, height, width, -height * .2)
+    rect(0, height, width, -height * .1)
 
     const newLevel = mic.getLevel();
     level = lerp(level, newLevel, 0.5);
@@ -60,15 +61,15 @@ function visLive() {
     // strokeWeight(width / spectrum.length)
     for (let i = 0; i < spectrum.length; i++) {
         const x = i * 3
-        const h = map(spectrum[i], 0, 255, 0, height * .2);
+        const h = map(spectrum[i], 0, 255, 0, height * .1);
         line(x, height, x, height - h)
     }
 
 
     fill(255)
     noStroke()
-    circle(width * .75, height * .9, level * height)
-    rect(pitch * 3, height, 3, -height * .2)
+    circle(width * .75, height * .95, level * height)
+    rect(pitch * 3, height, 3, -height * .1)
 
     let waveform = fft.waveform();
     let rms = 0
@@ -78,21 +79,17 @@ function visLive() {
     beginShape()
     for (let i = 0; i < waveform.length; i++) {
         let x = map(i, 0, waveform.length, 0, width);
-        let y = waveform[i] * height * .1
-        vertex(x, height * .9 + y);
+        let y = waveform[i] * height * .05
+        vertex(x, height * .95 + y);
 
         rms += waveform[i] * waveform[i]
     }
     endShape()
     rms = sqrt(rms / waveform.length)
 
-    fill(255)
-    noStroke()
-    rect(0, 0, rms * width, 10)
-
     if (speaking) {
         fill(255, 0, 0)
         noStroke()
-        circle(width - 10, height * .8 + 10, 10)
+        circle(width - 10, height * .9 + 10, 10)
     }
 }

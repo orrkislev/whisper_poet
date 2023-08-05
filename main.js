@@ -1,6 +1,8 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    textFont('Helvetica');
+
     mic = new p5.AudioIn();
     mic.start();
 
@@ -11,6 +13,7 @@ function setup() {
 }
 
 function mousePressed() {
+    background(255)
     getAudioContext().resume()
 }
 
@@ -72,19 +75,23 @@ async function sendToWhisper(blob) {
 
     const json = await res.json()
     const txt = json.text
-
-    print(txt)
-
-    textSize(20)
-    const textW = textWidth(txt)
-    const newTextSize = width / textW * 20
-    textSize(newTextSize)
-    textAlign(CENTER, CENTER);
-    fill(0)
-    noStroke()
-    text(txt, width / 2, height / 2)
+    putText(txt)
 }
 
+
+let textY = 20
+function putText(txt){
+    textSize(20)
+    // const textW = textWidth(txt)
+    // const newTextSize = width / textW * 20
+    // textSize(newTextSize)
+    // textAlign(CENTER, CENTER);
+    fill(0)
+    noStroke()
+    textAlign(RIGHT, TOP)
+    text(txt, random(width*.6,width*.9), textY)
+    textY += 22
+}
 
 
 function draw() {
